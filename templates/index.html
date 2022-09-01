@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% set active_page = 'home' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+    <div>
+        <div class="filter-toggle block lg:hidden">
+            <button>
+                <a href="#"><i class="bi bi-filter text-xl"></i></a>
+            </button>
+        </div>
+        <div class="layout grid lg:grid-cols-5 gap-3 h-fit">
+            <div class="filters hidden lg:block p-5 w-fit">
+                {% include 'filters.html' %}
+            </div>
+            <div class="content grid md:grid-cols-2 lg:grid-cols-4 lg:grid-flow-row lg:col-span-4 gap-4 h-fit">
+                {% if not cafes.items %}
+                    <div class="empty-cafe lg:col-end-3 justify-self-end text-[#33272a] text-lg font-bold mt-48">
+                        <h1>No cafés found</h1>
+                    </div>
+                {% endif %}
+
+                {% for cafe in cafes.items %}
+                    <div class="cafe-card grid auto-rows-auto gap-3 shadow-lg rounded-md lg:max-w-md pb-3 h-full">
+                        <div class="max-h-48 rounded-md overflow-hidden">
+                            <a href="{{ cafe.img_url }}"><img src="{{ cafe.img_url }}" alt="cafe_img"></a>
+                        </div>
+                        <div class="cafe-info p-2 h-fit">
+                            <h2>{{ cafe.name }}</h2>
+                            <p>Located at: {{ cafe.location }}</p>
+                            <a href="{{ cafe.map_url }}" class="hover:text-gray-500">Map Location</a>
+                            <p>{{ cafe.seats }} Seats</p>
+                            <p>{{ cafe.coffee_price }}</p>
+                        </div>
+                        <hr class="border-b-1 rounded mx-auto w-4/5 h-fit">
+                        <div class="cafe-amenities grid grid-cols-4 gap-3 text-center h-fit">
+                            <p class="text-xl {% if not cafe.has_sockets %}text-red-700{% endif %}" title="Outlets"><i
+                                    class="bi bi-plug-fill"></i></p>
+                            <p class="text-xl {% if not cafe.has_toilet %}text-red-700{% endif %}" title="Restrooms"><i
+                                    class="bi bi-badge-wc-fill"></i></p>
+                            <p class="text-xl  {% if not cafe.has_wifi %}text-red-700{% endif %}" title="Wifi"><i
+                                    class="bi bi-wifi"></i></p>
+                            <p class="text-xl {% if not cafe.can_take_calls %}text-red-700{% endif %}" title="Can Call">
+                                <i class="bi bi-telephone-inbound-fill"></i></p>
+                        </div>
+                        {% if not current_user.is_authenticated %}
+                            <div class="h-fit p-3">
+                                <a href="{{ url_for('update_cafe', id=cafe.id) }}"
+                                   class="bg-blue-500 py-2 px-5 rounded-md hover:bg-gray-500">Edit</a>
+                                <a href="{{ url_for('delete_cafe', id=cafe.id) }}"
+                                   class="bg-red-700 py-2 px-5 rounded-md hover:bg-[#E10600]">Delete</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="pagination lg:col-end-4 justify-self-end text-[#33272a]">
+                <div class="bg-blue-500 rounded-l-md rounded-r-md">
+                    <a href="{{ url_for('home', page=cafes.prev_num) }}"
+                       class="{% if cafes.page < cafes.pages %}inline-block pointer-events-none{% endif %}">
+                        <button class="bg-blue-500 p-2 rounded-l-md hover:bg-gray-500">
+                            &laquo; prev
+                        </button>
+                    </a>
+
+                    {%- for page_num in cafes.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if cafes.page == page_num %}
+                                <a>
+                                    <button class="bg-gray-500 p-2">
+                                        {{ page_num }}
+                                    </button>
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('home', page=page_num) }}">
+                                    <button class="bg-blue-500 p-2 hover:bg-gray-500">
+                                        {{ page_num }}
+                                    </button>
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {%- endfor %}
+                    <a href="{{ url_for('home', page=cafes.next_num) }}"
+                       class="{% if cafes.page == cafes.pages %}inline-block pointer-events-none{% endif %}">
+                        <button class="bg-blue-500 p-2 rounded-r-md hover:bg-gray-500"
+                                {% if cafes.page == cafes.pages %}disabled{% endif %}>
+                            next &raquo;
+                        </button>
+                    </a>
+
+                </div>
+                <div>
+                    <p class="text-center pt-3">
+                        page {{ cafes.page }} of {{ cafes.pages }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

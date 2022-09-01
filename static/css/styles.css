@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #faeee7;
+}
+
+nav a {
+    width: fit-content;
+}
+
+nav a:hover {
+    color: #6b7280;
+}
+
+.cafe-card {
+    background: #fffffe;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+

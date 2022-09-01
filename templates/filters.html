@@ -1,0 +1,44 @@
+<div class="filter grid gap-5 text-[#33272a] text-center">
+    <h2 class="filter-title">Filter</h2>
+    <form action="{{ url_for('home') }}" method="post">
+        <div class="grid gap-5">
+            <div class="grid gap-3">
+                {% for location in location_filter %}
+                    <div class="filter-item cursor-pointer bg-[#ffc6c7] p-3 rounded-md hover:bg-gray-500">
+                        <label for="location-checkbox" class=""></label>
+                        <input id="location-checkbox" type="checkbox" name="location" value="{{ location.location }}">
+                        <span>{{ location.location }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <hr class="rounded border-[#ffc6c7]">
+            <div class="amenities grid grid-cols-2 gap-3">
+                <div class="filter-item cursor-pointer bg-[#ffc6c7] p-3 rounded-md hover:bg-gray-500">
+                    <label for="socket-checkbox"></label>
+                    <input id="socket-checkbox" type="checkbox" name="amenity" value="has_sockets">
+                    <span><i class="bi bi-plug-fill text-xl"></i></span>
+                </div>
+                <div class="filter-item cursor-pointer bg-[#ffc6c7] p-3 rounded-md hover:bg-gray-500">
+                    <label for="wifi-filter"></label>
+                    <input id="wifi-filter" type="checkbox" name="amenity" value="has_wifi">
+                    <span><i class="bi bi-wifi text-xl"></i></span>
+                </div>
+                <div class="filter-item cursor-pointer bg-[#ffc6c7] p-3 rounded-md hover:bg-gray-500">
+                    <label for="toilet-filter"></label>
+                    <input id="toilet-filter" type="checkbox" name="amenity" value="has_toilet">
+                    <span><i class="bi bi-badge-wc-fill text-xl"></i></span>
+                </div>
+                <div class="filter-item cursor-pointer bg-[#ffc6c7] p-3 rounded-md hover:bg-gray-500">
+                    <label for="call-filter"></label>
+                    <input id="call-filter" type="checkbox" name="amenity" value="can_take_calls">
+                    <span><i class="bi bi-telephone-inbound-fill text-xl"></i></span>
+                </div>
+                <div class="col-span-2">
+                    <button class="bg-[#ff8ba7] hover:bg-gray-500 text-[#33272a] p-3 px-5 rounded-md" type="submit">
+                        Filter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

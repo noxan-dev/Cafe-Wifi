@@ -1,0 +1,24 @@
+<nav>
+    <div class="p-5">
+        <div class="grid grid-cols-2 text-[#33272a]">
+            <div><a href="{{ url_for('home') }}"><i class="bi bi-cup-hot text-xl">Cafe</i> & <i
+                    class="bi bi-wifi text-xl">Wifi</i></a></div>
+
+            <button class="nav-toggle block lg:hidden place-self-end">
+                <label>
+                    <input type="checkbox" class="hidden">
+                    <span class="nav-toggle-icon"><i class="bi bi-arrow-bar-down text-xl"></i></span>
+                </label>
+            </button>
+
+            <div class="hidden place-self-end lg:block lg:grid lg:grid-cols-4">
+                <a href="{{ url_for('login') }}" title="Login"><i class="bi bi-box-arrow-in-right text-xl"> Login</i></a>
+                <a href="{{ url_for('register') }}" title="Register"><i class="bi bi-file-earmark-person text-xl"> Register</i></a>
+                <a href="{{ url_for('logout') }}" title="Logout"><i class="bi bi-box-arrow-in-right text-xl"> Logout</i></a>
+                <a href="{{ url_for('add_cafe') }}" title="Add new cafe"><i class="bi bi-plus-circle text-xl"> Add new
+                    cafe</i></a>
+{#                <a><i class="bi bi-person-circle text-xl">{{ request.user.email }}</i></a>#}
+            </div>
+        </div>
+    </div>
+</nav>

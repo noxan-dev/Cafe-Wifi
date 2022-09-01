@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Cafe{% endblock title %}
+
+{% block body %}
+    <form method="post">
+        {{ form.csrf_token }}
+        {{ form.name }}
+        {{ form.map_url }}
+        {{ form.img_url }}
+        {{ form.location }}
+        <div>
+            <div>
+                {{ form.has_sockets }}
+                <span>Sockets</span>
+            </div>
+            <div>
+                {{ form.has_wifi }}
+                <span>Wifi</span>
+            </div>
+            <div>
+                {{ form.has_toilet }}
+                <span>Toilet</span>
+            </div>
+            <div>
+                {{ form.can_take_calls }}
+                <span>Calls</span>
+            </div>
+        </div>
+
+        {{ form.seats }}
+        {{ form.coffee_price }}
+        {{ form.submit }}
+    </form>
+
+
+{% endblock body %}
