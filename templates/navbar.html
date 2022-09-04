@@ -2,23 +2,31 @@
     <div class="p-5">
         <div class="grid grid-cols-2 text-[#33272a]">
             <div><a href="{{ url_for('home') }}"><i class="bi bi-cup-hot text-xl">Cafe</i> & <i
-                    class="bi bi-wifi text-xl">Wifi</i></a></div>
-
-            <button class="nav-toggle block lg:hidden place-self-end">
-                <label>
-                    <input type="checkbox" class="hidden">
-                    <span class="nav-toggle-icon"><i class="bi bi-arrow-bar-down text-xl"></i></span>
-                </label>
-            </button>
-
-            <div class="hidden place-self-end lg:block lg:grid lg:grid-cols-4">
-                <a href="{{ url_for('login') }}" title="Login"><i class="bi bi-box-arrow-in-right text-xl"> Login</i></a>
-                <a href="{{ url_for('register') }}" title="Register"><i class="bi bi-file-earmark-person text-xl"> Register</i></a>
-                <a href="{{ url_for('logout') }}" title="Logout"><i class="bi bi-box-arrow-in-right text-xl"> Logout</i></a>
-                <a href="{{ url_for('add_cafe') }}" title="Add new cafe"><i class="bi bi-plus-circle text-xl"> Add new
-                    cafe</i></a>
-{#                <a><i class="bi bi-person-circle text-xl">{{ request.user.email }}</i></a>#}
+                    class="bi bi-wifi text-xl">Wifi</i></a>
             </div>
+            <div class="nav-toggle block lg:hidden place-self-end">
+                <label for="nav-checkbox"></label>
+                <input id="nav-checkbox" type="checkbox">
+                <span class="nav-toggle-icon"><i class="bi bi-arrow-bar-down text-xl"></i></span>
+            </div>
+
+            {% if not current_user.is_authenticated %}
+                <div class="nav-menu hidden grid gap-2 col-span-2 grid-rows-2 place-self-end lg:block lg:grid-cols-2 lg:col-span-1 bg-[#fffffe] lg:bg-[#faeee7] lg:shadow-none lg:rounded-none shadow-md rounded-md p-2">
+                    <a href="{{ url_for('login') }}" class="px-3" title="Login"><i
+                            class="bi bi-box-arrow-in-right text-xl"> Login</i></a>
+                    <a href="{{ url_for('register') }}" class="px-3" title="Register"><i
+                            class="bi bi-file-earmark-person text-xl"> Register</i></a>
+                </div>
+            {% else %}
+                <div class="nav-menu hidden grid col-span-2 grid-rows-3 place-self-end lg:block lg:grid-cols-3 lg:col-span-1 gap-2 bg-[#fffffe] lg:bg-[#faeee7] lg:shadow-none lg:rounded-none shadow-md rounded-md p-2">
+                    <a href="{{ url_for('logout') }}" class="px-3" title="Logout"><i
+                            class="bi bi-box-arrow-in-right text-xl"> Logout</i></a>
+                    <a href="{{ url_for('add_cafe') }}" class="px-3" title="Add new cafe"><i
+                            class="bi bi-plus-circle text-xl"> Add cafe</i></a>
+                    <a class="px-3"><i class="bi bi-person-circle text-xl">{{ current_user.username }} Email</i></a>
+                </div>
+            {% endif %}
+
         </div>
     </div>
 </nav>

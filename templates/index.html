@@ -5,13 +5,13 @@
 
 {% block body %}
     <div>
-        <div class="filter-toggle block lg:hidden">
-            <button>
-                <a href="#"><i class="bi bi-filter text-xl"></i></a>
-            </button>
+        <div class="filter-toggle block lg:hidden w-fit">
+            <label for="filter-checkbox"></label>
+            <input id="filter-checkbox" type="checkbox">
+            <span class="filter-toggle-icon"><i class="bi bi-filter text-xl"></i></span>
         </div>
-        <div class="layout grid lg:grid-cols-5 gap-3 h-fit">
-            <div class="filters hidden lg:block p-5 w-fit">
+        <div class="layout grid lg:grid-cols-5 gap-3 h-fit relative">
+            <div class="filter-menu bg-[#faeee7] absolute lg:relative grid gap-5 text-[#33272a] text-center hidden lg:block p-5 w-fit">
                 {% include 'filters.html' %}
             </div>
             <div class="content grid md:grid-cols-2 lg:grid-cols-4 lg:grid-flow-row lg:col-span-4 gap-4 h-fit">
@@ -39,7 +39,7 @@
                                     class="bi bi-plug-fill"></i></p>
                             <p class="text-xl {% if not cafe.has_toilet %}text-red-700{% endif %}" title="Restrooms"><i
                                     class="bi bi-badge-wc-fill"></i></p>
-                            <p class="text-xl  {% if not cafe.has_wifi %}text-red-700{% endif %}" title="Wifi"><i
+                            <p class="text-xl {% if not cafe.has_wifi %}text-red-700{% endif %}" title="Wifi"><i
                                     class="bi bi-wifi"></i></p>
                             <p class="text-xl {% if not cafe.can_take_calls %}text-red-700{% endif %}" title="Can Call">
                                 <i class="bi bi-telephone-inbound-fill"></i></p>
@@ -56,10 +56,10 @@
                 {% endfor %}
 
             </div>
-            <div class="pagination lg:col-end-4 justify-self-end text-[#33272a]">
+            <div class="pagination justify-self-center lg:col-end-4 lg:justify-self-end text-[#33272a]">
                 <div class="bg-blue-500 rounded-l-md rounded-r-md">
                     <a href="{{ url_for('home', page=cafes.prev_num) }}"
-                       class="{% if cafes.page < cafes.pages %}inline-block pointer-events-none{% endif %}">
+                       class="{% if cafes.page == 1 %}inline-block pointer-events-none{% endif %}">
                         <button class="bg-blue-500 p-2 rounded-l-md hover:bg-gray-500">
                             &laquo; prev
                         </button>

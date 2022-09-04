@@ -43,14 +43,12 @@ def load_user(user_id):
 
 @app.route('/register')
 def register():
-    pass
     form = RegisterForm()
     return render_template('register.html', form=form)
 
 
 @app.route('/login')
 def login():
-    pass
     form = LoginForm()
     return render_template('login.html', form=form)
 

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% set active_page = 'login' %}
+
+{% block title %}Login{% endblock title %}
+
+{% block body %}
+    <div>
+        <form method="post">
+            {{ form.csrf_token }}
+            {{ form.username.label }} {{ form.username }}
+            {{ form.password.label }} {{ form.password }}
+            <input type="submit" value="Login" />
+        </form>
+    </div>
+
+
+{% endblock body %}

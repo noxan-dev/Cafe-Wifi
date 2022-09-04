@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% set active_page = 'register' %}
+
+{% block title %}Register{% endblock title %}
+
+{% block body %}
+    <div>
+        <form method="post">
+            {{ form.csrf_token }}
+            {{ form.username.label }} {{ form.username }}
+            {{ form.password1.label }} {{ form.password1 }}
+            {{ form.password2.label }} {{ form.password2 }}
+            {{ form.submit }}
+        </form>
+    </div>
+
+
+{% endblock body %}
