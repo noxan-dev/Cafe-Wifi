@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from forms import CreateForm, LoginForm, RegisterForm
 from uuid import uuid4
@@ -13,10 +14,17 @@ login_manager = LoginManager(app)
 db = SQLAlchemy(app)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column('id', db.Text(length=36), default=lambda: str(uuid4()), primary_key=True)
     username = db.Column(db.String(16))
     password = db.Column(db.String(32))
+
+    def is_active(self):
+        return True
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
 
 class Cafe(db.Model):
@@ -38,18 +46,40 @@ db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+
+    if form.validate_on_submit():
+        if form.password1.data != form.password2.data:
+            return redirect(url_for('register'))
+        else:
+            new_user = User(username=form.username.data, password=form.password1.data)
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('cafes'))
+
     return render_template('register.html', form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            return redirect(url_for('login'))
+        else:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('home'))
+            else:
+                return redirect(url_for('login'))
     return render_template('login.html', form=form)
 
 
@@ -87,7 +117,7 @@ def home():
 
 
 @app.route('/add-cafe', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def add_cafe():
     form = CreateForm()
 
@@ -103,7 +133,7 @@ def add_cafe():
 
 
 @app.route('/update-cafe/<int:id>', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def update_cafe(id):
     cafe = Cafe.query.get_or_404(id)
     form = CreateForm(obj=cafe)
@@ -117,7 +147,7 @@ def update_cafe(id):
 
 
 @app.route('/delete-cafe/<int:id>', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def delete_cafe(id):
     cafe = Cafe.query.get_or_404(id)
     db.session.delete(cafe)
